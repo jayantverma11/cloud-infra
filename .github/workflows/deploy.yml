@@ -1,4 +1,4 @@
-name: Terraform Plan
+name: Deploy Infra 
 
 on:
   push:
@@ -38,8 +38,11 @@ jobs:
             -backend-config="key=infra/terraform.tfstate" \
             -backend-config="region=us-east-1"
 
-      - name: Terraform Plan
-        run: terraform plan
+      # - name: Terraform Plan
+      #   run: terraform plan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
