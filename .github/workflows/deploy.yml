@@ -32,11 +32,11 @@ jobs:
         run: terraform --version
 
       - name: Terraform Init
-        run: terraform init \
-          -backend=true \
-          -backend-config="bucket=jayant-infra-test" \
-          -backend-config="key=infra/terraform.tfstate" \
-          -backend-config="region=us-east-1"
+        run: |
+          terraform init -backend=true \
+            -backend-config="bucket=jayant-infra-test" \
+            -backend-config="key=infra/terraform.tfstate" \
+            -backend-config="region=us-east-1"
 
       - name: Terraform Plan
         run: terraform plan
