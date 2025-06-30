@@ -1,8 +1,8 @@
 data "template_file" "user_data" {
   template = file("${path.module}/user_data.sh")
   vars = {
-    GH_TOKEN    = var.gh_token
-    GH_USERNAME = var.gh_username
+    GH_TOKEN    = var.GH_TOKEN
+    GH_USERNAME = var.GH_USERNAME
   }
 }
 

@@ -51,6 +51,6 @@ variable "security_group_name" {
   default     = "MySecurityGroup"
 }
 
-variable "gh_token" {}
+variable "GH_TOKEN" {}
 
-variable "gh_username" {}
+variable "GH_USERNAME" {}
