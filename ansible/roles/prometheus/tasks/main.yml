@@ -1,48 +1,74 @@
-- name: Create user
-  user:
-    name: prometheus
-    shell: /usr/sbin/nologin
-    system: yes
+---
+- name: Set Prometheus version
+  set_fact:
+    prometheus_version: "2.52.0"
+    prometheus_user: prometheus
+    install_dir: /opt/prometheus
 
-- name: Download Prometheus tar
+- name: Create prometheus user
+  user:
+    name: "{{ prometheus_user }}"
+    shell: /sbin/nologin
+    system: true
+
+- name: Create install directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ install_dir }}"
+    - /etc/prometheus
+    - /var/lib/prometheus
+
+- name: Download Prometheus tarball
   get_url:
-    url: https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz
-    dest: /tmp/prometheus.tar.gz
+    url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+    dest: "{{ install_dir }}/prometheus.tar.gz"
 
 - name: Extract Prometheus
   unarchive:
-    src: /tmp/prometheus.tar.gz
-    dest: /opt/
+    src: "{{ install_dir }}/prometheus.tar.gz"
+    dest: "{{ install_dir }}"
     remote_src: yes
 
-- name: Copy Prometheus binary
+- name: Install Prometheus binaries
   copy:
     remote_src: yes
-    src: /opt/prometheus-2.31.1.linux-amd64/prometheus
-    dest: /usr/local/bin/prometheus
+    src: "{{ install_dir }}/prometheus-{{ prometheus_version }}.linux-amd64/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
     mode: '0755'
+  loop:
+    - prometheus
+    - promtool
 
-- name: Create config directory
-  file:
-    path: /etc/prometheus
-    state: directory
-
-- name: Add Prometheus config
+- name: Create basic prometheus.yml config
   template:
     src: prometheus.yml.j2
     dest: /etc/prometheus/prometheus.yml
-    mode: '0644'
-    owner: prometheus
-    group: prometheus
 
-- name: Setup systemd service
-  template:
-    src: prometheus.service.j2
+- name: Create systemd unit file
+  copy:
     dest: /etc/systemd/system/prometheus.service
-    mode: '0644'
+    content: |
+      [Unit]
+      Description=Prometheus
+      After=network.target
 
-- name: Enable and start Prometheus
+      [Service]
+      User={{ prometheus_user }}
+      ExecStart=/usr/local/bin/prometheus \
+        --config.file=/etc/prometheus/prometheus.yml \
+        --storage.tsdb.path=/var/lib/prometheus
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: Restart Prometheus
+
+- name: Start and enable Prometheus service
   systemd:
     name: prometheus
-    enabled: yes
+    enabled: true
     state: started
+    daemon_reload: yes

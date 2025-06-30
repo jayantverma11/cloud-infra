@@ -5,19 +5,18 @@
     dest: /usr/local/bin/docker-compose
     mode: '0755'
 
-
 - name: Ensure directory exists for Docker Compose
   file:
-    path: /tmp/cloud-infra
+    path: /tmp/cloud-infra/ansible
     state: directory
 
 - name: Stop services using Docker Compose
   command: 
     cmd: docker-compose down
-    chdir: /tmp/cloud-infra
+    chdir: /tmp/cloud-infra/ansible
      # become: true
 
 - name: Start services using Docker Compose
   command: 
     cmd: docker-compose up -d
-    chdir: /tmp/cloud-infra
+    chdir: /tmp/cloud-infra/ansible
