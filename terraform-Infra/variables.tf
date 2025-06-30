@@ -15,6 +15,13 @@ variable "vpc_name" {
   description = "this is my vpc_name"
   default     = "MyVPC"
 }
+
+variable "ami_id" {
+  type        = string
+  description = "this is my ami_id"
+  default     = "ami-020cba7c55df1f615"
+}
+
 variable "cidr_block" {
   description = "CIDR block for the VPC"
   default     = "10.0.0.0/16"
