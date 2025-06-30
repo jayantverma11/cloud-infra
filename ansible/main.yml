@@ -1,0 +1,9 @@
+- name: Deploy application with Docker and Docker Compose
+  hosts: localhost
+  become: yes 
+  roles:
+    - install-git-and-clone
+    - docker-install
+    - dockercompose-install
+    - prometheus
+    - grafana
