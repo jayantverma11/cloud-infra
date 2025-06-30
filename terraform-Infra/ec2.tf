@@ -1,5 +1,5 @@
 data "template_file" "user_data" {
-  template = file("${path.module}/user_data.sh")
+  template = file("${path.module}/user-data.sh")
   vars = {
     GH_TOKEN    = var.GH_TOKEN
     GH_USERNAME = var.GH_USERNAME
