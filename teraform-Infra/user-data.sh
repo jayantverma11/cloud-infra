@@ -15,6 +15,6 @@ cat << EOF >> /etc/environment
 EOF
 
 cd /tmp/
-git clone https://${gh_username}:${gh_token}@github.com/jayantverma11/cloud-infra.git
+git clone https://${GH_USERNAME}:${GH_TOKEN}@github.com/jayantverma11/cloud-infra.git
 
 ansible-playbook /tmp/cloud-infra/ansible/main.yml
