@@ -18,6 +18,8 @@ services:
       - "5000:5000"
     depends_on:
       - mongodb
+    volumes:
+      - ./logs/backend:/app/logs
 
   frontend:
     container_name: frontend
@@ -53,3 +55,5 @@ volumes:
   frontend-logs:
     driver: local
   grafana-storage:
+  backend-logs:
+    driver: local

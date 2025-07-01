@@ -4,5 +4,3 @@
   roles:
     - docker-install
     - dockercompose-install
-    # - prometheus
-    # - grafana
