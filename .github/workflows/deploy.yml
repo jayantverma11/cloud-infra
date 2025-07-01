@@ -34,15 +34,15 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init -backend=true \
-            -backend-config="bucket=jayant-infra-test" \
+            -backend-config="bucket=jayant-verma-infra" \
             -backend-config="key=infra/terraform.tfstate" \
             -backend-config="region=us-east-1"
 
       # - name: Terraform Plan
       #   run: terraform plan
 
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+      # - name: Terraform Destroy
+      #   run: terraform destroy -auto-approve
