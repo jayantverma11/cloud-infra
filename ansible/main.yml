@@ -1,5 +1,5 @@
 - name: Deploy application with Docker and Docker Compose
-  hosts: all
+  hosts: localhost
   become: yes 
   roles:
     - docker-install
