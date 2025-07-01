@@ -12,6 +12,7 @@
 
 - name: Start services using Docker Compose
   shell: |
+    docker-compose build
     docker-compose down || true
     docker-compose up -d
   args:
